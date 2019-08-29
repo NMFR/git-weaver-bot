@@ -1,0 +1,24 @@
+{
+  "name": "git-weaver-bot",
+  "version": "0.0.0",
+  "description": "A modular git bot",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NMFR/git-weaver-bot.git"
+  },
+  "keywords": [
+    "git",
+    "bot"
+  ],
+  "author": "Nuno Rodrigues",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NMFR/git-weaver-bot/issues"
+  },
+  "homepage": "https://github.com/NMFR/git-weaver-bot#readme"
+}
