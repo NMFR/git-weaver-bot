@@ -1,3 +1,5 @@
+import { start } from './api';
+
 console.error('Not implemented yet!');
 
 class TestClass {
@@ -13,3 +15,5 @@ function testFunc(str: string): string {
 }
 
 console.log(testFunc('hello world'));
+
+start();
