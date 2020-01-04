@@ -16,5 +16,13 @@
     "semi": ["error", "always"],
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.js", "**/*.test.ts"],
+      "env": {
+        "jest": true
+      }
+    }
+  ]
 }
