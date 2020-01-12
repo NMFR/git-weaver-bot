@@ -45,6 +45,7 @@
   },
   "homepage": "https://github.com/NMFR/git-weaver-bot#readme",
   "dependencies": {
+    "axios": "^0.19.1",
     "express": "^4.17.1"
   },
   "devDependencies": {
