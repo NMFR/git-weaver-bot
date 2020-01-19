@@ -49,4 +49,20 @@ export default class GitlabApi {
       );
     }
   }
+
+  async commentMergeRequest(repositoryId: string, mergeRequestId: string, comment: string) {
+    const response = await this.client.post(
+      `https://gitlab.com/api/v4/projects/${repositoryId}/merge_requests/${mergeRequestId}/notes`,
+      {
+        body: comment,
+      },
+      {
+        Authorization: `Bearer ${this.authToken}`,
+      },
+    );
+
+    if (response.status !== 200 && response.status !== 201) {
+      throw new GitlabApiError('Failed to comment the merge request', ErrorType.Other, response.status, response.data);
+    }
+  }
 }

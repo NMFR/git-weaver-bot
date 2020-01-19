@@ -19,6 +19,7 @@ export default class AxiosHttpJsonClient extends HttpJsonClient {
       url: options.url,
       method: options.method,
       headers: options?.headers,
+      data: options?.data,
     });
 
     return {
