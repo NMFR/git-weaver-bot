@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase, camelcase */
 import { HttpJsonClient } from '../../httpJsonClient';
-import GitlabApiError, { ErrorType } from './error';
+import GitlabApiError, { ErrorType } from './Error';
 import { Json } from '../../httpJsonClient/client';
 import User from '../../domain/models/git/User';
 import Comment from '../../domain/models/git/Comment';
@@ -78,7 +78,11 @@ export default class GitlabApi {
     );
 
     if (response.status !== 200) {
-      throw new GitlabApiError('Failed to comment the merge request', ErrorType.Other, response.status, response.data);
+      throw new GitlabApiError('Failed to comment the merge request', {
+        type: ErrorType.Other,
+        apiResponseStatus: response.status,
+        apiResponse: response.data,
+      });
     }
 
     return response?.data?.map(GitlabApi.parseJsonComment);
@@ -100,12 +104,11 @@ export default class GitlabApi {
     );
 
     if (response.status !== 200) {
-      throw new GitlabApiError(
-        'Failed to accept the merge request',
-        ACCEPT_MERGE_REQUEST_STATUS_ERROR_TYPE_MAP[response.status] ?? ErrorType.Other,
-        response.status,
-        response.data,
-      );
+      throw new GitlabApiError('Failed to accept the merge request', {
+        type: ACCEPT_MERGE_REQUEST_STATUS_ERROR_TYPE_MAP[response.status] ?? ErrorType.Other,
+        apiResponseStatus: response.status,
+        apiResponse: response.data,
+      });
     }
   }
 
@@ -121,7 +124,11 @@ export default class GitlabApi {
     );
 
     if (response.status !== 200 && response.status !== 201) {
-      throw new GitlabApiError('Failed to comment the merge request', ErrorType.Other, response.status, response.data);
+      throw new GitlabApiError('Failed to comment the merge request', {
+        type: ErrorType.Other,
+        apiResponseStatus: response.status,
+        apiResponse: response.data,
+      });
     }
   }
 
