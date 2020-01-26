@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/camelcase, camelcase */
 import { HttpJsonClient } from '../../httpJsonClient';
 import GitlabApiError, { ErrorType } from './Error';
-import { Json } from '../../httpJsonClient/client';
-import User from '../../domain/models/git/User';
 import Comment from '../../domain/models/git/Comment';
+import { parseComment } from '../parsers';
 
 export interface Pagination {
   page?: number;
@@ -29,29 +28,6 @@ export default class GitlabApi {
     const paginationWithDefaults: Pagination = { ...defaultPagination, ...pagination };
 
     return `per_page=${paginationWithDefaults.itemsPerPage}&page=${paginationWithDefaults.page}`;
-  }
-
-  private static parseJsonUser(json: Json): User {
-    const user = {
-      id: json?.id,
-      username: json?.username,
-      name: json?.name,
-      email: json?.email,
-    };
-
-    return user;
-  }
-
-  private static parseJsonComment(json: Json): Comment {
-    const comment = {
-      id: json?.id,
-      text: json?.body,
-      author: GitlabApi.parseJsonUser(json?.author),
-      createdAt: json?.created_at ? new Date(json?.created_at) : null,
-      updatedAt: json?.updated_at ? new Date(json?.updated_at) : null,
-    };
-
-    return comment;
   }
 
   private client: HttpJsonClient;
@@ -85,7 +61,7 @@ export default class GitlabApi {
       });
     }
 
-    return response?.data?.map(GitlabApi.parseJsonComment);
+    return response?.data?.map(parseComment);
   }
 
   async acceptMergeRequest(repositoryId: string, mergeRequestId: string, options?: AcceptMergeRequestOptions) {
