@@ -2,6 +2,7 @@ import { Express, Router } from 'express';
 
 import createServer from './api/rest';
 import GitProvider from './git/providers/Provider';
+import GitlabProvider from './git/providers/gitlab/Provider';
 
 interface GitProviderMap {
   [name: string]: GitProvider;
@@ -9,7 +10,9 @@ interface GitProviderMap {
 
 export default class Application {
   private static createProviders(): GitProviderMap {
-    return {};
+    return {
+      gitlab: new GitlabProvider({ name: 'gitlab', apiAuthToken: 'test' }),
+    };
   }
 
   providersMap: GitProviderMap;
@@ -22,6 +25,7 @@ export default class Application {
     const webhooks = Router();
     Object.entries(this.providersMap).forEach(([name, provider]) => {
       if (provider.webhook) {
+        console.info(`setting up webhook for ${name} provider`);
         webhooks.use(`/${name}`, provider.webhook);
       }
     });
