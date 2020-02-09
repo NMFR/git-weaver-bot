@@ -1,4 +1,4 @@
-import CustomError from '../../common/CustomError';
+import CustomError from '../../../../common/CustomError';
 
 export enum ErrorType {
   MergeRequestNotAcceptable, // ie: Work in Progress, Closed, Pipeline Pending Completion, or Failed while requiring Success

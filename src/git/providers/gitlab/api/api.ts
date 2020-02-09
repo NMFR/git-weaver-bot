@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase, camelcase */
-import { HttpJsonClient } from '../../httpJsonClient';
+import { HttpJsonClient } from '../../../../common/http/json';
 import GitlabApiError, { ErrorType } from './Error';
-import Comment from '../../domain/models/git/Comment';
+import Comment from '../../../../domain/models/git/Comment';
 import { parseComment } from '../parsers';
 
 export interface Pagination {

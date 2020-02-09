@@ -24,7 +24,7 @@ describe('Gitlab Webhook', () => {
   });
 
   test('token fail', async () => {
-    const router = createWebhook({ webhookToken: 'test_token' });
+    const router = createWebhook({ token: 'test_token' });
     const app = express();
     app.use(bodyParser.json());
     app.use(router);
@@ -42,7 +42,7 @@ describe('Gitlab Webhook', () => {
   });
 
   test('token success', async () => {
-    const router = createWebhook({ webhookToken: 'test_token' });
+    const router = createWebhook({ token: 'test_token' });
     const app = express();
     app.use(bodyParser.json());
     app.use(router);

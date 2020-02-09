@@ -13,7 +13,7 @@ export function start() {
   app.use(rest);
 
   app.listen(port, () => {
-    console.log(`server started at http://localhost:${port}`);
+    console.info(`server started at http://localhost:${port}`);
   });
 
   return app;

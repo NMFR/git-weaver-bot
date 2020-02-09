@@ -2,7 +2,7 @@
 import { Router } from 'express';
 
 export interface CreateWebhookOptions {
-  webhookToken: string;
+  token: string;
 }
 
 export default function createWebhook(options?: CreateWebhookOptions): Router {
@@ -11,7 +11,7 @@ export default function createWebhook(options?: CreateWebhookOptions): Router {
   router.post('/', (request, response) => {
     const jsonData = request.body;
 
-    if (options?.webhookToken && request.header('X-Gitlab-Token') !== options?.webhookToken) {
+    if (options?.token && request.header('X-Gitlab-Token') !== options?.token) {
       console.log(`Gitlab webhook failed token check, received token: ${request.header('X-Gitlab-Token')}`, jsonData);
       return response.status(401).send();
     }

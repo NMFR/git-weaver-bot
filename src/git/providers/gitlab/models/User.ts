@@ -1,4 +1,4 @@
-import UserInterface from '../domain/models/git/User';
+import UserInterface from '../../../../domain/models/git/User';
 
 export default class User implements UserInterface {
   id: string;

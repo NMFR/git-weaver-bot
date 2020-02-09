@@ -1,4 +1,4 @@
-import HttpJsonClient, { Options, Response } from './client';
+import HttpJsonClient, { Options, Response } from './Client';
 
 export default class MockHttpJsonClient extends HttpJsonClient {
   requestOptions: Options;

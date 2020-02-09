@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase, camelcase */
-import { Json } from '../httpJsonClient/client';
-import User from './User';
-import Comment from '../domain/models/git/Comment';
+import { Json } from '../../../common/http/json/Client';
+import User from './models/User';
+import Comment from '../../../domain/models/git/Comment';
 
 export function parseUser(json: Json): User {
   const user = new User();
