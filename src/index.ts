@@ -1,15 +1,5 @@
-console.error('Not implemented yet!');
+import Application from './Application';
 
-class TestClass {
-  integer: number;
+const app = new Application();
 
-  string: string;
-}
-
-function testFunc(str: string): string {
-  const x = new TestClass();
-  x.integer = 2;
-  return `test:${str} ${x?.integer} ${x?.string ?? 'it was null'}`;
-}
-
-console.log(testFunc('hello world'));
+export default app;

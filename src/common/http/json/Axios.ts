@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 
-import HttpJsonClient, { Options, Response } from './client';
+import HttpJsonClient, { Options, Response } from './Client';
 
 export default class AxiosHttpJsonClient extends HttpJsonClient {
   private axiosInstance: AxiosInstance;

@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/camelcase, camelcase */
-import { HttpJsonClient } from '../../httpJsonClient';
-import GitlabApiError, { ErrorType } from './error';
-import { Json } from '../../httpJsonClient/client';
-import User from '../../domain/models/git/User';
-import Comment from '../../domain/models/git/Comment';
+import { HttpJsonClient } from '../../../../common/http/json';
+import GitlabApiError, { ErrorType } from './Error';
+import Comment from '../../../../domain/models/git/Comment';
+import { parseComment } from '../parsers';
 
 export interface Pagination {
   page?: number;
@@ -31,29 +30,6 @@ export default class GitlabApi {
     return `per_page=${paginationWithDefaults.itemsPerPage}&page=${paginationWithDefaults.page}`;
   }
 
-  private static parseJsonUser(json: Json): User {
-    const user = {
-      id: json?.id,
-      username: json?.username,
-      name: json?.name,
-      email: json?.email,
-    };
-
-    return user;
-  }
-
-  private static parseJsonComment(json: Json): Comment {
-    const comment = {
-      id: json?.id,
-      text: json?.body,
-      author: GitlabApi.parseJsonUser(json?.author),
-      createdAt: json?.created_at ? new Date(json?.created_at) : null,
-      updatedAt: json?.updated_at ? new Date(json?.updated_at) : null,
-    };
-
-    return comment;
-  }
-
   private client: HttpJsonClient;
 
   private authToken: string;
@@ -78,10 +54,14 @@ export default class GitlabApi {
     );
 
     if (response.status !== 200) {
-      throw new GitlabApiError('Failed to comment the merge request', ErrorType.Other, response.status, response.data);
+      throw new GitlabApiError('Failed to comment the merge request', {
+        type: ErrorType.Other,
+        apiResponseStatus: response.status,
+        apiResponse: response.data,
+      });
     }
 
-    return response?.data?.map(GitlabApi.parseJsonComment);
+    return response?.data?.map(parseComment);
   }
 
   async acceptMergeRequest(repositoryId: string, mergeRequestId: string, options?: AcceptMergeRequestOptions) {
@@ -100,12 +80,11 @@ export default class GitlabApi {
     );
 
     if (response.status !== 200) {
-      throw new GitlabApiError(
-        'Failed to accept the merge request',
-        ACCEPT_MERGE_REQUEST_STATUS_ERROR_TYPE_MAP[response.status] ?? ErrorType.Other,
-        response.status,
-        response.data,
-      );
+      throw new GitlabApiError('Failed to accept the merge request', {
+        type: ACCEPT_MERGE_REQUEST_STATUS_ERROR_TYPE_MAP[response.status] ?? ErrorType.Other,
+        apiResponseStatus: response.status,
+        apiResponse: response.data,
+      });
     }
   }
 
@@ -121,7 +100,11 @@ export default class GitlabApi {
     );
 
     if (response.status !== 200 && response.status !== 201) {
-      throw new GitlabApiError('Failed to comment the merge request', ErrorType.Other, response.status, response.data);
+      throw new GitlabApiError('Failed to comment the merge request', {
+        type: ErrorType.Other,
+        apiResponseStatus: response.status,
+        apiResponse: response.data,
+      });
     }
   }
 

@@ -1,6 +1,8 @@
 export type Json = any;
 
-export type Headers = { [status: string]: string };
+export interface Headers {
+  [status: string]: string;
+}
 
 export enum Method {
   OPTIONS = 'OPTIONS',

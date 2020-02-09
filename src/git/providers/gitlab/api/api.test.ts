@@ -1,8 +1,8 @@
 /* eslint-disable */
-import MockHttpJsonClient from '../../httpJsonClient/mock';
+import MockHttpJsonClient from '../../../../common/http/json/Mock';
 import GitlabApi from './api';
-import GitlabApiError, { ErrorType } from './error';
-import { Method } from '../../httpJsonClient/client';
+import GitlabApiError, { ErrorType } from './Error';
+import { Method } from '../../../../common/http/json/Client';
 
 import listMrNotesJson from './api.test.listMrNotes';
 

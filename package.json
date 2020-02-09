@@ -46,11 +46,13 @@
   "homepage": "https://github.com/NMFR/git-weaver-bot#readme",
   "dependencies": {
     "axios": "^0.19.1",
+    "body-parser": "^1.19.0",
     "express": "^4.17.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.1",
     "@types/jest": "^24.0.18",
+    "@types/supertest": "^2.0.8",
     "@typescript-eslint/eslint-plugin": "^2.14.0",
     "@typescript-eslint/parser": "^2.14.0",
     "concurrently": "^4.1.2",
@@ -66,6 +68,7 @@
     "lint-staged": "^9.2.5",
     "nodemon": "^1.19.1",
     "prettier": "^1.19.1",
+    "supertest": "^4.0.2",
     "ts-jest": "^24.0.2",
     "typescript": "^3.7.4"
   }
