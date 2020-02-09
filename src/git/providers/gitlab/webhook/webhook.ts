@@ -2,7 +2,7 @@
 import { Router } from 'express';
 
 export interface CreateWebhookOptions {
-  token: string;
+  token?: string;
 }
 
 export default function createWebhook(options?: CreateWebhookOptions): Router {
