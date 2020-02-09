@@ -2,6 +2,7 @@
 import supertest from 'supertest';
 import express from 'express';
 import bodyParser from 'body-parser';
+
 import createWebhook from './webhook';
 
 describe('Gitlab Webhook', () => {
