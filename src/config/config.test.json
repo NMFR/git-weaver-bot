@@ -3,7 +3,9 @@
   "port": 80,
   "providers": {
     "gitlab": {
-      "test": 1
+      "type": "gitlab",
+      "apiAuthToken": "mock",
+      "webhookToken": "TEST_TOKEN"
     }
   }
 }

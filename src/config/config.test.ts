@@ -6,16 +6,26 @@ import { createConfig } from './Config';
 
 describe('Config', () => {
   test('Success from string', async () => {
-    const stream = Readable.from(['{"hostname": "localhost", "port": 80, "providers": {"gitlab":{"test":1}}}']);
+    const stream = Readable.from([
+      '{"hostname": "localhost", "port": 80, "providers": {"gitlab":{"type": "gitlab","apiAuthToken": "mock","webhookToken": "TEST_TOKEN"}}}',
+    ]);
     const config = await createConfig(stream);
 
-    expect(config).toEqual({ hostname: 'localhost', port: 80, providerMap: { gitlab: { test: 1 } } });
+    expect(config).toEqual({
+      hostname: 'localhost',
+      port: 80,
+      providerMap: { gitlab: { type: 'gitlab', apiAuthToken: 'mock', webhookToken: 'TEST_TOKEN' } },
+    });
   });
 
   test('Success from file', async () => {
     const stream = fs.createReadStream(path.join(__dirname, './config.test.json'));
     const config = await createConfig(stream);
 
-    expect(config).toEqual({ hostname: 'localhost', port: 80, providerMap: { gitlab: { test: 1 } } });
+    expect(config).toEqual({
+      hostname: 'localhost',
+      port: 80,
+      providerMap: { gitlab: { type: 'gitlab', apiAuthToken: 'mock', webhookToken: 'TEST_TOKEN' } },
+    });
   });
 });
