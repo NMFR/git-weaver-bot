@@ -1,0 +1,11 @@
+{
+  "hostname": "localhost",
+  "port": 3000,
+  "providers": {
+    "gitlab": {
+      "type": "gitlab",
+      "apiAuthToken": "mock",
+      "webhookToken": "TEST_TOKEN"
+    }
+  }
+}

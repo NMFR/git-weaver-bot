@@ -1,0 +1,9 @@
+{
+  "hostname": "localhost",
+  "port": 80,
+  "providers": {
+    "gitlab": {
+      "test": 1
+    }
+  }
+}
