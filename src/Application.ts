@@ -1,8 +1,8 @@
 import { Express, Router } from 'express';
 
+import Config, { ProviderMapConfig } from './config';
 import createServer from './api/rest';
 import GitProviderMap from './git/providers/ProviderMap';
-import Config, { ProviderMapConfig } from './config';
 
 const VALID_PROVIDER_NAME_REGEX = /^[a-zA-Z-]+$/g;
 const VALID_PROVIDER_TYPE_REGEX = /^[a-zA-Z-]+$/g;
@@ -60,6 +60,10 @@ export default class Application {
       }
     });
 
-    this.restServer = createServer({ hostname: config.hostname, port: config.port, webhooks });
+    this.restServer = createServer({
+      hostname: config.api.hostname,
+      port: config.api.port,
+      webhooks,
+    });
   }
 }

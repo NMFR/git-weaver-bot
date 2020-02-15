@@ -1,6 +1,8 @@
 {
-  "hostname": "localhost",
-  "port": 80,
+  "api": {
+    "hostname": "localhost",
+    "port": 80
+  },
   "providers": {
     "gitlab": {
       "type": "gitlab",

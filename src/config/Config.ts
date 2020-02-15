@@ -1,37 +1,23 @@
 import { Readable } from 'stream';
+
+import { readableToString } from '../common/io/readable';
+import Api from './Api';
 import ProviderMapConfig from './ProviderMapConfig';
 
 export default interface Config {
-  readonly hostname?: string;
-  readonly port?: number;
+  readonly api: Api;
   readonly providerMap: ProviderMapConfig;
 }
 
-async function stream2string(stream: Readable): Promise<string> {
-  const chunks = [];
-
-  for await (const chunk of stream) {
-    chunks.push(chunk);
-  }
-
-  if (chunks.length === 0) {
-    return '';
-  }
-
-  if (typeof chunks[0] === 'string') {
-    return chunks.join();
-  }
-
-  return Buffer.concat(chunks).toString();
-}
-
 export async function createConfig(stream: Readable): Promise<Config> {
-  const str = await stream2string(stream);
+  const str = await readableToString(stream);
   const json = JSON.parse(str);
 
   return {
-    hostname: json?.hostname ?? 'localhost',
-    port: json?.port || 3000,
+    api: {
+      hostname: json?.api?.hostname ?? 'localhost',
+      port: json?.api?.port || 3000,
+    },
     providerMap: json?.providers ?? {},
   };
 }
