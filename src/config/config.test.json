@@ -1,4 +1,5 @@
 {
+  "logLevel": "verbose",
   "api": {
     "hostname": "localhost",
     "port": 80

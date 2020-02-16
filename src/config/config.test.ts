@@ -1,17 +1,17 @@
 import path from 'path';
-import fs from 'fs';
 import { Readable } from 'stream';
 
-import { createConfig } from './Config';
+import { createConfigFromStream, createConfigFromFile } from './Config';
 
 describe('Config', () => {
   test('Success from string', async () => {
     const stream = Readable.from([
-      '{"api":{"hostname": "localhost", "port": 80}, "providers": {"gitlab":{"type": "gitlab","apiAuthToken": "mock","webhookToken": "TEST_TOKEN"}}}',
+      '{"logLevel": "verbose","api":{"hostname": "localhost", "port": 80}, "providers": {"gitlab":{"type": "gitlab","apiAuthToken": "mock","webhookToken": "TEST_TOKEN"}}}',
     ]);
-    const config = await createConfig(stream);
+    const config = await createConfigFromStream(stream);
 
     expect(config).toEqual({
+      logLevel: 'verbose',
       api: {
         hostname: 'localhost',
         port: 80,
@@ -21,10 +21,10 @@ describe('Config', () => {
   });
 
   test('Success from file', async () => {
-    const stream = fs.createReadStream(path.join(__dirname, './config.test.json'));
-    const config = await createConfig(stream);
+    const config = await createConfigFromFile(path.join(__dirname, './config.test.json'));
 
     expect(config).toEqual({
+      logLevel: 'verbose',
       api: {
         hostname: 'localhost',
         port: 80,

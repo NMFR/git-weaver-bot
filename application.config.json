@@ -1,4 +1,5 @@
 {
+  "logLevel": "debug",
   "api": {
     "hostname": "localhost",
     "port": 3080

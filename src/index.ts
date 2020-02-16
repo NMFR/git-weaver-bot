@@ -1,19 +1,28 @@
 import path from 'path';
-import fs from 'fs';
 
-import { createConfig } from './config';
+import { Logger } from './logger';
+import { createConfigFromFile } from './config';
 import Application from './Application';
+import { diContainer } from './dependencyInjection';
+import JsonLogger from './logger/JsonLogger';
+import LogLevel from './logger/LogLevel';
 
 async function main() {
   try {
-    const configFileStream = fs.createReadStream(path.join(__dirname, '../../application.config.json'));
-    const config = await createConfig(configFileStream);
-    const application = new Application(config);
+    let logger: Logger;
+    diContainer.register('Logger', (logger = new JsonLogger(LogLevel.info)));
 
-    return application;
+    const configFilePath = path.join(__dirname, '../../application.config.json');
+    const config = await createConfigFromFile(configFilePath);
+
+    diContainer.register('Logger', (logger = new JsonLogger(LogLevel.fromString(config.logLevel))));
+
+    logger.info(`read configuration from: '${configFilePath}'`);
+    logger.info(`log level: '${config.logLevel}'`);
+
+    diContainer.register('Application', new Application(config));
   } catch (ex) {
-    console.error(ex);
-    return null;
+    diContainer.resolve('Logger').error('error', { error: ex });
   }
 }
 

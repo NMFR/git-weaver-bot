@@ -1,6 +1,6 @@
-import Config, { createConfig } from './Config';
+import Config, { createConfigFromStream, createConfigFromFile } from './Config';
 import ProviderConfig from './ProviderConfig';
 import ProviderMapConfig from './ProviderMapConfig';
 
-export { createConfig, ProviderMapConfig, ProviderConfig };
+export { createConfigFromStream, createConfigFromFile, ProviderMapConfig, ProviderConfig };
 export default Config;

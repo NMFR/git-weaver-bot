@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase, camelcase */
 import { Router } from 'express';
+import { diContainer } from '../../../../dependencyInjection';
 
 export interface CreateWebhookOptions {
   token?: string;
@@ -12,65 +13,67 @@ export default function createWebhook(options?: CreateWebhookOptions): Router {
     const jsonData = request.body;
 
     if (options?.token && request.header('X-Gitlab-Token') !== options?.token) {
-      console.log(`Gitlab webhook failed token check, received token: ${request.header('X-Gitlab-Token')}`, jsonData);
+      diContainer
+        .resolve('Logger')
+        .debug(`Gitlab webhook failed token check, received token: ${request.header('X-Gitlab-Token')}`, jsonData);
       return response.status(401).send();
     }
 
     switch (jsonData?.object_kind) {
       case 'push':
-        console.log('New commits pushed', jsonData);
+        diContainer.resolve('Logger').debug('New commits pushed', jsonData);
         break;
 
       case 'tag_push':
-        console.log('New tag pushed', jsonData);
+        diContainer.resolve('Logger').debug('New tag pushed', jsonData);
         break;
 
       case 'issue':
-        console.log('New issue event', jsonData);
+        diContainer.resolve('Logger').debug('New issue event', jsonData);
         break;
 
       case 'note':
         switch (jsonData?.object_attributes?.noteable_type) {
           case 'Commit':
-            console.log('New comment on a commit', jsonData);
+            diContainer.resolve('Logger').debug('New comment on a commit', jsonData);
             break;
 
           case 'MergeRequest':
-            console.log('New comment on a merge request', jsonData);
+            diContainer.resolve('Logger').debug('New comment on a merge request', jsonData);
             break;
 
           case 'Issue':
-            console.log('New comment on an issue', jsonData);
+            diContainer.resolve('Logger').debug('New comment on an issue', jsonData);
             break;
 
           case 'Snippet':
-            console.log('New comment on a snippet', jsonData);
+            diContainer.resolve('Logger').debug('New comment on a snippet', jsonData);
             break;
 
           default:
-            console.log('New comment on an unknown object', jsonData);
+            diContainer.resolve('Logger').debug('New comment on an unknown object', jsonData);
             break;
         }
         break;
 
       case 'merge_request':
-        console.log('New merge request event', jsonData);
+        diContainer.resolve('Logger').debug('New merge request event', jsonData);
         break;
 
       case 'wiki_page':
-        console.log('New wiki page event', jsonData);
+        diContainer.resolve('Logger').debug('New wiki page event', jsonData);
         break;
 
       case 'pipeline':
-        console.log('New pipeline event', jsonData);
+        diContainer.resolve('Logger').debug('New pipeline event', jsonData);
         break;
 
       case 'build':
-        console.log('New job event', jsonData);
+        diContainer.resolve('Logger').debug('New job event', jsonData);
         break;
 
       default:
-        console.log('Unknown event', jsonData);
+        diContainer.resolve('Logger').debug('Unknown event', jsonData);
         break;
     }
 

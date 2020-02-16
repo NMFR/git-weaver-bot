@@ -1,6 +1,7 @@
 import express, { Express, RequestHandler } from 'express';
 import bodyParser from 'body-parser';
 
+import { diContainer } from '../../dependencyInjection';
 import version from './routes/version';
 
 export interface CreateServerOptions {
@@ -24,7 +25,9 @@ export function createServer(options?: CreateServerOptions): Express {
   }
 
   app.listen(optionsWithDefaults.port, optionsWithDefaults.hostname, () => {
-    console.info(`server started at http://${optionsWithDefaults.hostname}:${optionsWithDefaults.port}`);
+    diContainer
+      .resolve('Logger')
+      .info(`server started at http://${optionsWithDefaults.hostname}:${optionsWithDefaults.port}`);
   });
 
   return app;

@@ -3,6 +3,7 @@ import { Express, Router } from 'express';
 import Config, { ProviderMapConfig } from './config';
 import createServer from './api/rest';
 import GitProviderMap from './git/providers/ProviderMap';
+import { diContainer } from './dependencyInjection';
 
 const VALID_PROVIDER_NAME_REGEX = /^[a-zA-Z-]+$/g;
 const VALID_PROVIDER_TYPE_REGEX = /^[a-zA-Z-]+$/g;
@@ -39,7 +40,7 @@ export default class Application {
 
       map[name] = provider;
 
-      console.info(`created git provider "${name}" of type "${type}"`);
+      diContainer.resolve('Logger').info(`created git provider "${name}" of type "${type}"`);
     });
 
     return map;
@@ -55,7 +56,7 @@ export default class Application {
     const webhooks = Router();
     Object.entries(this.providersMap).forEach(([name, provider]) => {
       if (provider.webhook) {
-        console.info(`setting up webhook for "${name}" provider`);
+        diContainer.resolve('Logger').info(`setting up webhook for "${name}" provider`);
         webhooks.use(`/${name}`, provider.webhook);
       }
     });
