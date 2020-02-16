@@ -4,6 +4,13 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 import createWebhook from './webhook';
+import { diContainer } from '../../../../dependencyInjection';
+import { LogLevel } from '../../../../logger';
+import JsonLogger from '../../../../logger/JsonLogger';
+
+beforeAll(() => {
+  diContainer.register('Logger', new JsonLogger(LogLevel.warn));
+});
 
 describe('Gitlab Webhook', () => {
   test('No token success', async () => {
