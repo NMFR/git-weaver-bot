@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/camelcase, camelcase */
 import { Router } from 'express';
+import NewMergeRequest from '../../../../domain/models/events/NewMergeRequest';
 import { diContainer } from '../../../../dependencyInjection';
+import NewMergeRequestComment from '../../../../domain/models/events/NewMergeRequestComment';
+import { parseNote, parseMergeRequest } from '../parsers';
 
 export interface CreateWebhookOptions {
   token?: string;
@@ -34,10 +37,13 @@ export default function createWebhook(options?: CreateWebhookOptions): Router {
 
       case 'note':
         switch (jsonData?.object_attributes?.noteable_type) {
-          case 'Commit':
+          case 'Commit': {
             diContainer.resolve('Logger').debug('New comment on a commit', jsonData);
+            const comment = parseNote(jsonData?.object_attributes);
+            const mergeRequest = parseMergeRequest(jsonData?.merge_request);
+            diContainer.resolve('EventQueue').push(new NewMergeRequestComment(comment, mergeRequest));
             break;
-
+          }
           case 'MergeRequest':
             diContainer.resolve('Logger').debug('New comment on a merge request', jsonData);
             break;
@@ -56,10 +62,12 @@ export default function createWebhook(options?: CreateWebhookOptions): Router {
         }
         break;
 
-      case 'merge_request':
+      case 'merge_request': {
         diContainer.resolve('Logger').debug('New merge request event', jsonData);
+        const mergeRequest = parseMergeRequest(jsonData?.object_attributes);
+        diContainer.resolve('EventQueue').push(new NewMergeRequest(mergeRequest));
         break;
-
+      }
       case 'wiki_page':
         diContainer.resolve('Logger').debug('New wiki page event', jsonData);
         break;

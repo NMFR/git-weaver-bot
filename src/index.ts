@@ -6,6 +6,7 @@ import Application from './Application';
 import { diContainer } from './dependencyInjection';
 import JsonLogger from './logger/JsonLogger';
 import LogLevel from './logger/LogLevel';
+import EventQueue from './EventQueue';
 
 async function main() {
   try {
@@ -19,6 +20,8 @@ async function main() {
 
     logger.info(`read configuration from: '${configFilePath}'`);
     logger.info(`log level: '${config.logLevel}'`);
+
+    diContainer.register('EventQueue', new EventQueue());
 
     diContainer.register('Application', new Application(config));
   } catch (ex) {
